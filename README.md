@@ -6,3 +6,8 @@ pip install -r requirements.txt
 
 Помимо этого для корректной работы сервиса необходимо наличие 2х файлов - `pre_catboost.pkl` и `catboost_model`
 
+Для запуска сервиса необходимо выполнить команду
+
+`
+python app.py
+`
