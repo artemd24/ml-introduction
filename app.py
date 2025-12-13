@@ -68,7 +68,7 @@ def predict(
     if Region_Code < 0 or Region_Code > 52:
         raise HTTPException(status.HTTP_400_BAD_REQUEST, "Incorrect Region_Code")
 
-    if Age > 85:
+    if Age < 0 or Age > 85:
         raise HTTPException(status.HTTP_400_BAD_REQUEST, "Incorrect Age, maximum age=85")
 
     value = {
