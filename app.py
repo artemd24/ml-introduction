@@ -74,6 +74,18 @@ def predict(
     if Policy_Sales_Channel < 1 or Policy_Sales_Channel > 163:
         raise HTTPException(status.HTTP_400_BAD_REQUEST, "Incorrect Policy_Sales_Channel")
 
+    if Driving_License not in [0, 1]:
+        raise HTTPException(status.HTTP_400_BAD_REQUEST, "Incorrect Driving_License")
+
+    if Previously_Insured not in [0, 1]:
+        raise HTTPException(status.HTTP_400_BAD_REQUEST, "Incorrect Previously_Insured")
+
+    if Annual_Premium < 0:
+        raise HTTPException(status.HTTP_400_BAD_REQUEST, "Incorrect Annual_Premium")
+
+    if Vintage < 0:
+        raise HTTPException(status.HTTP_400_BAD_REQUEST, "Incorrect Vintage")
+
     value = {
         'Gender': Gender.get_value(),
         'Age': Age,
