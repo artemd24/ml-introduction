@@ -71,6 +71,9 @@ def predict(
     if Age < 0 or Age > 85:
         raise HTTPException(status.HTTP_400_BAD_REQUEST, "Incorrect Age, maximum age=85")
 
+    if Policy_Sales_Channel < 1 or Policy_Sales_Channel > 163:
+        raise HTTPException(status.HTTP_400_BAD_REQUEST, "Incorrect Policy_Sales_Channel")
+
     value = {
         'Gender': Gender.get_value(),
         'Age': Age,
