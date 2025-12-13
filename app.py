@@ -1,24 +1,18 @@
 from enum import Enum
 
-from catboost import CatBoostClassifier
 from fastapi import FastAPI, Query, HTTPException
 import pickle
 import pandas as pd
 import uvicorn
 from pydantic import BaseModel
-from sklearn.pipeline import make_pipeline
 from starlette import status
 from starlette.middleware.cors import CORSMiddleware
 
 from preprocess_catboost import Preprocess_catboost
 
 # --- Загружаем модель ---
-with open("pre_catboost.pkl", "rb") as f:
-    loaded_pre = pickle.load(f)
-
-loaded_catboost_model = CatBoostClassifier()
-loaded_catboost_model.load_model("catboost_model")
-loaded_pipeline = make_pipeline(loaded_pre, loaded_catboost_model)
+with open("catboost_pipeline.pkl", "rb") as f:
+    model = pickle.load(f)
 
 # --- Создаём приложение ---
 app = FastAPI(title="Insurance Cross Selling Prediction")
@@ -98,13 +92,12 @@ def predict(
         'Policy_Sales_Channel': Policy_Sales_Channel,
         'Vintage': Vintage,
     }
-    print(value)
     # Формируем DataFrame для модели
     data = pd.DataFrame([value])
 
     # Получаем предсказание
-    pred = loaded_pipeline.predict(data)[0]
-    prob = loaded_pipeline.predict_proba(data)[0][1]  # вероятность положительного класса
+    pred = model.predict(data)[0]
+    prob = model.predict_proba(data)[0][1]  # вероятность положительного класса
 
     return ResultSchema(
         prediction=int(pred),
