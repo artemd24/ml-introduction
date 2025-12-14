@@ -10,6 +10,9 @@ from starlette.middleware.cors import CORSMiddleware
 
 from preprocess_catboost import Preprocess_catboost
 
+
+THRESHOLD = 0.6934673366834171
+
 # --- Загружаем модель ---
 with open("catboost_pipeline.pkl", "rb") as f:
     model = pickle.load(f)
@@ -96,11 +99,10 @@ def predict(
     data = pd.DataFrame([value])
 
     # Получаем предсказание
-    pred = model.predict(data)[0]
     prob = model.predict_proba(data)[0][1]  # вероятность положительного класса
 
     return ResultSchema(
-        prediction=int(pred),
+        prediction=int(prob > THRESHOLD),
         probability=float(prob)
     )
 
